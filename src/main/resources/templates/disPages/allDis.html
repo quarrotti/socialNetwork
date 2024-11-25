@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все обсуждения</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex; /* Используем flex для основного контейнера */
+        }
+        .sidebar {
+            width: 150px; /* Ширина навигатора */
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-right: 20px; /* Отступ справа для отделения от основного контента */
+        }
+        .sidebar h3 {
+            color: #333;
+            font-size: 1.2em;
+        }
+        .sidebar button, .active-button {
+            display: block;
+            margin: 5px 0;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9em;
+            box-sizing: border-box; /* Учитываем padding в ширине */
+        }
+        .sidebar button:hover {
+            background-color: #0056b3;
+        }
+        .active-button {
+            background-color: #e7f0ff; /* Цвет для активной кнопки */
+            color: #007bff;
+            cursor: default; /* Убираем указатель */
+            pointer-events: none; /* Отключаем клики на активной кнопке */
+        }
+        .main-content {
+            flex: 1; /* Занимает оставшееся пространство */
+            display: flex; /* Используем flex для создания двух колонок */
+            justify-content: space-between; /* Разделяем колонки */
+            margin-left: 20px; /* Отступ слева для отделения от навигатора */
+        }
+        .discussions-section {
+            flex: 1; /* Занимает оставшееся пространство */
+            display: flex;
+            flex-direction: column; /* Вертикальная компоновка */
+            margin-right: 20px; /* Отступ справа для отделения от формы */
+            overflow-y: auto; /* Добавляем прокрутку, если контент превышает высоту */
+            max-height: 80vh; /* Максимальная высота секции обсуждений */
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        hr {
+            margin: 20px 0;
+            width: 100%;
+        }
+        .discussion-container {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+        }
+        .discussion-container h3 {
+            margin: 0;
+            color: #007bff;
+        }
+        .discussion-container h4 {
+            margin: 5px 0;
+            color: #555;
+        }
+        .form-container {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            width: 250px; /* Уменьшенная ширина формы */
+        }
+        .form-container textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+            height: 100px;
+        }
+        .form-container input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .form-container input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        /* Стили для блока поиска */
+        .search-container {
+            margin-top: 20px; /* Отступ сверху для блока поиска */
+            text-align: center; /* Центрируем текст */
+        }
+        .search-container input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .search-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h3>Навигатор</h3>
+    <button onclick="window.location.href='/notes-feed'">Главная страница</button>
+    <div class="active-button">
+        Все обсуждения
+    </div>
+    <button onclick="window.location.href='/allNotes'">Все записи</button>
+    <button onclick="window.location.href='/users'">Все пользователи</button>
+    <button onclick="window.location.href='/users/personalProfile'">Ваш профиль</button>
+    <button onclick="window.location.href='/logout'">Выйти</button>
+</div>
+<div class="main-content">
+    <div class="discussions-section">
+        <h1>Все обсуждения</h1>
+        <hr>
+        <div th:each="dis: ${listDiscussions}" class="discussion-container">
+            <h3><a th:href="@{/discussions/{id}(id=${dis.id})}" th:text="${dis.heading}"></a></h3>
+            <h4 th:text="'Автор: ' + ${dis.user.username}"></h4>
+        </div>
+    </div>
+    <div class="form-container">
+        <h3>Создать новое обсуждение</h3>
+        <form action="/discussions/createDiscussion" method="post">
+            <input type="text" id="heading" name="heading" placeholder="Заголовок" required/><br>
+            <textarea id="body" name="body" placeholder="Ваш текст" required></textarea><br>
+            <input type="submit" value="Добавить обсуждение"/>
+        </form>
+        <div class="search-container">
+            <h3>Поиск обсуждений</h3>
+            <form action="/searchDiscussions" method="get">
+                <input type="text" name="heading" placeholder="Введите название обсуждения" required/>
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

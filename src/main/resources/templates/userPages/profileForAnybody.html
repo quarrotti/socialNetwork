@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль пользователя</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex; /* Используем flex для основного контейнера */
+        }
+        .sidebar {
+            width: 150px; /* Ширина навигатора */
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-right: 20px; /* Отступ справа для отделения от основного контента */
+        }
+        .sidebar h3 {
+            color: #333;
+            font-size: 1.2em;
+        }
+        .sidebar button {
+            display: block;
+            margin: 5px 0;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        .sidebar button:hover {
+            background-color: #0056b3;
+        }
+        .active {
+            background-color: transparent;
+            color: black;
+            cursor: default;
+            border: none;
+        }
+        .active::before {
+            content: " > "; /* Стрелка перед текстом */
+            font-weight: bold;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex: 1; /* Занимает оставшееся пространство */
+            display: flex; /* Используем flex для размещения записей и обсуждений */
+            flex-direction: row; /* Горизонтальное размещение */
+            justify-content: space-between; /* Распределяем пространство между колонками */
+        }
+        .notes {
+            width: 60%; /* Ширина для записей */
+        }
+        .discussions {
+            width: 35%; /* Ширина для обсуждений */
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 20px 0;
+        }
+        .note {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        .note h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .note a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .note a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h3>Навигатор</h3>
+    <button onclick="window.location.href='/notes-feed'">Главная страница</button>
+    <button onclick="window.location.href='/discussions'">Все обсуждения</button>
+    <button onclick="window.location.href='/allNotes'">Все записи</button>
+    <button onclick="window.location.href='/users'">Все пользователи</button>
+    <button onclick="window.location.href='/users/personalProfile'">Ваш профиль</button>
+    <button onclick="window.location.href='/logout'">Выйти</button>
+</div>
+<div class="container">
+    <div class="notes">
+        <h1 th:text="${profile.username}"></h1>
+        <hr>
+        <p>Email пользователя: <span th:text="${profile.email}"></span></p>
+        <hr>
+        <p>Информация о пользователе:</p>
+        <p th:text="${profile.description}"></p>
+        <hr>
+        <h2>Записи пользователя:</h2>
+        <div th:each="Note: ${listNotesForUser }" class="note">
+            <h3><a th:href="@{/notes-feed/{id}(id=${Note.id})}" th:text="${Note.tag}" style="text-decoration: none; color: #333;"></a></h3>
+        </div>
+    </div>
+    <div class="discussions">
+        <h2>Обсуждения пользователя:</h2>
+        <div class="discussion-container">
+            <div th:each="dis: ${listDiscussions}" class="discussion">
+                <h3><a th:href="@{/discussions/{id}(id=${dis.id})}" th:text="${dis.heading}" style="text-decoration: none; color: #333;"></a></h3>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

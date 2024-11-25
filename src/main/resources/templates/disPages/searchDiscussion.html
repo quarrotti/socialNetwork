@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Записи</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      display: flex; /* Используем flex для основного контейнера */
+    }
+    .sidebar {
+      width: 150px; /* Ширина навигатора */
+      background: white;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-right: 20px; /* Отступ справа для отделения от основного контента */
+    }
+    .sidebar h3 {
+      color: #333;
+      font-size: 1.2em;
+    }
+    .sidebar button, .active-button {
+      display: block;
+      margin: 5px 0;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9em;
+      box-sizing: border-box; /* Учитываем padding в ширине */
+    }
+    .sidebar button:hover {
+      background-color: #0056b3;
+    }
+    .active-button {
+      background-color: #e7f0ff; /* Цвет для активной кнопки */
+      color: #007bff;
+      cursor: default; /* Убираем указатель */
+      pointer-events: none; /* Отключаем клики на активной кнопке */
+    }
+    .main-content {
+      flex: 1; /* Занимает оставшееся пространство */
+      display: flex; /* Используем flex для создания двух колонок */
+      justify-content: space-between; /* Разделяем колонки */
+      margin-left: 20px; /* Отступ слева для отделения от навигатора */
+    }
+    .notes-section {
+      flex: 1; /* Занимает оставшееся пространство */
+      display: flex;
+      flex-direction: column; /* Вертикальная компоновка */
+      margin-right: 20px; /* Отступ справа для отделения от формы */
+      overflow-y: auto; /* Добавляем прокрутку, если контент превышает высоту */
+      max-height: 80vh; /* Максимальная высота секции записей */
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    hr {
+      margin: 20px 0;
+      width: 100%;
+    }
+    .note-container {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 100%;
+    }
+    .note-container h3 {
+      margin: 0;
+      color: #007bff;
+    }
+    .note-container h4 {
+      margin: 5px 0;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <h3>Навигатор</h3>
+  <button onclick="window.location.href='/notes-feed'">Главная страница</button>
+  <button onclick="window.location.href='/discussions'">Все обсуждения</button>
+  <button onclick="window.location.href='/allNotes'">Все записи</button>
+  <button onclick="window.location.href='/users'">Все пользователи</button>
+  <button onclick="window.location.href='/users/personalProfile'">Ваш профиль</button>
+  <button onclick="window.location.href='/logout'">Выйти</button>
+</div>
+<div class="main-content">
+  <div class="notes-section">
+    <h1>Обсуждения с введенным названием</h1>
+    <hr>
+    <div th:each="dis: ${listDiscussions}" class="note-container">
+      <h3><a th:href="@{/discussions/{id}(id=${dis.id})}" th:text="${dis.heading}"></a></h3>
+      <h4 th:text="'Автор обсуждения: ' + ${dis.user.username}"></h4>
+    </div>
+  </div>
+</div>
+</body>
+</html>

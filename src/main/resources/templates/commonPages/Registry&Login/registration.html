@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* Центрируем форму по горизонтали */
+            align-items: center; /* Центрируем форму по вертикали */
+            height: 100vh; /* Занимаем всю высоту экрана */
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px; /* Ширина формы */
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center; /* Центрируем заголовок */
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1em;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>Регистрация</h1>
+    <form action="/registration" method="post">
+        <label for="login">Ваш логин для входа в аккаунт:</label>
+        <input type="text" name="login" id="login" required/><br>
+
+        <label for="password">Пароль для входа в аккаунт:</label>
+        <input type="password" name="password" id="password" required/><br>
+
+        <label for="username">Ваш никнейм (он будет отображаться у вас на странице):</label>
+        <input type="text" name="username" id="username" required/><br>
+
+        <label for="email">Ваш email:</label>
+        <input type="email" name="email" id="email" required/><br>
+
+        <label for="description">Расскажите о себе:</label>
+        <input type="text" name="description" id="description"/><br>
+
+        <input type="submit" value="Создать аккаунт"/>
+    </form>
+</div>
+</body>
+</html>

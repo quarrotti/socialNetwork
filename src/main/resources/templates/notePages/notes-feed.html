@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лента записей</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+        }
+        .sidebar {
+            width: 150px; /* Ширина навигатора */
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-right: 20px;
+        }
+        .sidebar h3 {
+            color: #333;
+            font-size: 1.2em;
+        }
+        .sidebar button, .active-button {
+            display: block;
+            margin: 5px 0;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+            box-sizing: border-box; /* Учитываем padding в ширине */
+        }
+        .active-button {
+            background-color: #e7f0ff; /* Цвет для активной кнопки */
+            color: #007bff;
+            cursor: default; /* Убираем указатель */
+            pointer-events: none; /* Отключаем клики на активной кнопке */
+        }
+        .sidebar button:hover {
+            background-color: #0056b3;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin-left: 20px;
+        }
+        .notes-section, .discussions-section {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: calc(50% - 10px);
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        hr {
+            margin: 20px 0;
+            width: 100%;
+        }
+        .note-container {
+            margin-bottom: 10px;
+        }
+        .note-container h3 {
+            margin: 0;
+            color: #007bff;
+        }
+        .note-container h4 {
+            margin: 5px 0;
+            color: #555;
+        }
+        .form-container {
+            display: none;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-container textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+            height: 100px;
+        }
+        .form-container input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .form-container input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .toggle-form {
+            cursor: pointer;
+            color: black;
+            margin-bottom: 10px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    <script>
+        function toggleForm() {
+            const formContainer = document.getElementById('formContainer');
+            if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+                formContainer.style.display = 'block';
+            } else {
+                formContainer.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="sidebar">
+    <h3>Навигатор</h3>
+    <div class="active-button">
+        Главная страница
+    </div>
+    <button onclick="window.location.href='/discussions'">Все обсуждения</button>
+    <button onclick="window.location.href='/allNotes'">Все записи</button>
+    <button onclick="window.location.href='/users'">Все пользователи</button>
+    <button onclick="window.location.href='/users/personalProfile'">Ваш профиль</button>
+    <button onclick="window.location.href='/logout'">Выйти</button>
+</div>
+<div class="main-content">
+    <div class="notes-section">
+        <h1>Лента записей</h1>
+        <hr>
+        <h2>Записи всех пользователей</h2>
+        <div th:each="Note: ${listNotes}" class="note-container">
+            <h3><a th:href="@{/notes-feed/{id}(id=${Note.id})}" th:text="${Note.tag}"></a></h3>
+            <h4 th:text="'Автор записи: ' + ${Note.user.username}"></h4>
+        </div>
+        <hr>
+    </div>
+
+    <div class="discussions-section">
+        <h2>Все обсуждения</h2>
+        <hr>
+        <div th:each="dis: ${listDiscussions}" class="note-container">
+            <h3><a th:href="@{/discussions/{id}(id=${dis.id})}" th:text="${dis.heading}"></a></h3>
+            <h4 th:text="'Автор обсуждения: ' + ${dis.user.username}"></h4>
+        </div>
+        <hr>
+    </div>
+</div>
+</body>
+</html>

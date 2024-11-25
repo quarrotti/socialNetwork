@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ваш Профиль</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex; /* Используем flex для основного контейнера */
+        }
+        .sidebar {
+            width: 150px; /* Ширина навигатора */
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-right: 20px; /* Отступ справа для отделения от основного контента */
+        }
+        .sidebar h3 {
+            color: #333;
+            font-size: 1.2em;
+        }
+        .sidebar button, .active-button {
+            display: block;
+            margin: 5px 0;
+            background-color: #007bff; /* Цвет кнопок в навигаторе */
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9em;
+            box-sizing: border-box; /* Учитываем padding в ширине */
+        }
+        .sidebar button:hover {
+            background-color: #0056b3; /* Цвет кнопок при наведении */
+        }
+        .active-button {
+            background-color: #e7f0ff; /* Цвет для активной кнопки */
+            color: #007bff;
+            cursor: default; /* Убираем указатель */
+            pointer-events: none; /* Отключаем клики на активной кнопке */
+            padding: 10px; /* Добавляем padding, чтобы кнопка выглядела как остальные */
+            border-radius: 4px; /* Скругляем углы */
+            text-align: center; /* Центрируем текст */
+        }
+        .container {
+            max-width: 800px; /* Увеличиваем ширину контейнера */
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex: 1; /* Занимает оставшееся пространство */
+            display: flex; /* Используем flex для размещения записей и обсуждений */
+        }
+        .content {
+            flex: 2; /* Основной контент занимает больше места */
+        }
+        .discussions {
+            flex: 1; /* Обсуждения занимают меньше места */
+            margin-left: 20px; /* Отступ слева для отделения от записей */
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: inline-block; /* Для размещения кнопки рядом */
+        }
+        .edit-button {
+            background-color: #dc3545; /* Красный цвет для кнопки редактирования */
+            color: white; /* Белый цвет текста */
+            border: none; /* Без рамки */
+            padding: 10px; /* Отступы для кнопки */
+            border-radius: 4px; /* Скругленные углы */
+            cursor: pointer; /* Указатель для курсора */
+            margin-left: 10px; /* Отступ слева для отделения от имени пользователя */
+            font-size: 0.9em; /* Размер шрифта */
+            display: inline-block; /* Чтобы кнопка была на одной линии с заголовком */
+        }
+        .edit-button:hover {
+            background-color: #c82333; /* Темно-красный цвет при наведении */
+        }
+        h2 {
+            color: #555;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 20px 0;
+        }
+        .note {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        .note h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .note a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .note a:hover {
+            text-decoration: underline;
+        }
+        .discussion-container {
+            margin-top: 20px; /* Отступ сверху для отделения от предыдущего контента */
+            padding: 10px;
+            border: 1px solid #ddd; /* Рамка для контейнера обсуждений */
+            border-radius: 5px; /* Скругленные углы */
+            background: #fafafa; /* Фоновый цвет контейнера */
+        }
+        .discussion {
+            margin-bottom: 15px; /* Отступ между обсуждениями */
+            padding: 10px;
+            border: 1px solid #ddd; /* Рамка для каждого обсуждения */
+            border-radius: 4px; /* Скругленные углы */
+            background: #fff; /* Белый фон для обсуждения */
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h3>Навигатор</h3>
+    <button onclick="window.location.href='/notes-feed'">Главная страница</button>
+    <button onclick="window.location.href='/discussions'">Все обсуждения</button>
+    <button onclick="window.location.href='/allNotes'">Все записи</button>
+    <button onclick="window.location.href='/users'">Все пользователи</button>
+    <div class="active-button">Ваш профиль</div>
+    <button onclick="window.location.href='/logout'">Выйти</button>
+</div>
+<div class="container">
+    <div class="content">
+        <h1 th:text="${currentUser  .username}"></h1>
+        <button class="edit-button" onclick="window.location.href='/users/personalProfile/edit'">Редактировать профиль</button>
+        <hr>
+        <p>Email пользователя: <span th:text="${currentUser  .email}"></span></p>
+        <hr>
+        <p>Информация о пользователе:</p>
+        <p th:text="${currentUser  .description}"></p>
+        <hr>
+        <h2>Записи пользователя:</h2>
+        <div th:each="Note: ${listNotes}" class="note">
+            <h3><a th:href="@{/notes-feed/forCurrent/{id}(id=${Note.id})}" th:text="${Note.tag}" style="text-decoration: none; color: #333;"></a></h3>
+        </div>
+    </div>
+    <div class="discussions">
+        <h2>Обсуждения пользователя:</h2>
+        <div class="discussion-container">
+            <div th:each="dis: ${listDiscussions}" class="discussion">
+                <h3><a th:href="@{/discussions/personalDis/{id}(id=${dis.id})}" th:text="${dis.heading}" style="text-decoration: none; color: #333;"></a></h3>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

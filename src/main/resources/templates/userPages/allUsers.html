@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все профили</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+        }
+        .sidebar {
+            width: 150px; /* Ширина навигатора */
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-right: 20px; /* Отступ справа для отделения от основного контента */
+        }
+        .sidebar h3 {
+            color: #333;
+            font-size: 1.2em;
+        }
+        .sidebar button {
+            display: block;
+            margin: 5px 0;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        .sidebar button:hover {
+            background-color: #0056b3;
+        }
+        .active-button {
+            display: flex;
+            align-items: center;
+            background-color: #e7f0ff; /* Цвет для активной кнопки */
+            color: #007bff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: default; /* Убираем указатель */
+            width: 100%;
+            font-size: 0.9em;
+        }
+        .arrow {
+            margin-right: 10px; /* Отступ между стрелкой и текстом */
+            font-size: 1.2em; /* Размер стрелки */
+        }
+        .main-content {
+            flex: 1; /* Занимает оставшееся пространство */
+            display: flex;
+            flex-direction: column; /* Вертикальная ориентация */
+            max-width: 1200px; /* Ограничиваем максимальную ширину */
+        }
+        .profiles-section {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        hr {
+            margin: 20px 0;
+            width: 100%;
+        }
+        .discussion-container {
+            margin-bottom: 10px; /* Отступ между профилями */
+        }
+        .discussion-container h3 {
+            margin: 0;
+            color: #007bff;
+        }
+        .discussion-container h3 a {
+            text-decoration: none; /* Убираем подчеркивание */
+        }
+        .discussion-container h3 a:hover {
+            text-decoration: underline; /* Подчеркивание при наведении */
+        }
+        .form-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-container input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h3>Навигатор</h3>
+    <button onclick="window.location.href='/notes-feed'">Главная страница</button>
+    <button onclick="window.location.href='/discussions'">Все обсуждения</button>
+    <button onclick="window.location.href='/allNotes'">Все записи</button>
+    <div class="active-button">
+        Все пользователи
+    </div>
+    <button onclick="window.location.href='/users/personalProfile'">Ваш профиль</button>
+    <button onclick="window.location.href='/logout'">Выйти</button>
+</div>
+<div class="main-content">
+    <div class="profiles-section">
+        <h1>Все профили</h1>
+        <hr>
+        <div class="form-container">
+            <form action="/searchUsers" method="get">
+                <input type="text" name="username" placeholder="Поиск пользователей" required/>
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+        <hr>
+        <div th:each="user: ${listOfAllUsers}" class="discussion-container">
+            <h3><a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.username}"></a></h3>
+            <hr>
+        </div>
+    </div>
+</div>
+</body>
+</html>
